@@ -1,0 +1,170 @@
+<HTML>  
+<HEAD>   
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", '1', {'packages':['corechart']});</script>
+<script type="text/javascript">
+function drawPieChart() {
+	var opts = {sendMethod: 'auto'};
+  var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheet/ccc?key=0Au7nto1mJD62dFYzVWhzRTRVZzdkY081NFFmbXJFUmc#gid=2',opts);
+	query.setQuery('select A,B');
+  query.send(handlePieChartQueryResponse);
+}
+
+function handlePieChartQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {'title':'occupational group projected to add the most new jobs between 2010-2020,',
+                           'width':800,
+                           'height':600,
+						   'is3D':true,
+						   
+                 };
+  var data = response.getDataTable();
+  
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div')).
+            draw(data, options);
+}
+  
+function drawChart() {
+var opts = {sendMethod: 'auto'};
+  var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheet/ccc?key=0Au7nto1mJD62dFNpNnZCcE9CdVFGbWtTRW5iOXpLQlE&usp=drive_web#gid=4',opts);
+	query.setQuery('select A,B');
+  query.send(handleQueryResponse);
+}
+
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {'title':'occupations with the highest percent change of employment between 2010-20.',
+                          'width':800,
+                           'height':600,
+                 };
+  var data = response.getDataTable();
+  
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div')).
+            draw(data, options);
+}
+function drawColumnChart() {
+  var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheet/ccc?key=0Au7nto1mJD62dHFpR2dxVGh2WGkzQ3Vpa1ZFdlAwR2c&usp=drive_web#gid=2');
+  query.setQuery('select A,B,C');
+  query.send(handleColumnChartQueryResponse);
+}
+
+function handleColumnChartQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {'title':'occupations with the largest projected employment declines, 2010-20',
+                           'width':800,
+                           'height':600,
+                 'legend':{position:'none'}};
+  var data = response.getDataTable();
+  
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+  chart.draw(data,options);
+}
+function drawColumnChart2() {
+  var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheet/ccc?key=0Au7nto1mJD62dHVVS21GRkRGX1gyZzROcWdkWk9xQmc&usp=drive_web#gid=1');
+  query.setQuery('select A,B,C,D');
+  query.send(handleColumnChart2QueryResponse);
+}
+
+function handleColumnChart2QueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {'title':'occupations with the largest projected employment growth, 2010-20',
+                           'width':800,
+                           'height':600,
+                 'legend':{position:'none'}};
+  var data = response.getDataTable();
+  
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+  chart.draw(data,options);
+}
+function drawBarChart() {
+  var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheet/ccc?key=0Au7nto1mJD62dFEwX3JsS0YtdlNjRTRjbmxuak5YWmc&usp=drive_web#gid=1');
+  query.setQuery('select A,E');
+  query.send(handleQueryResponse);
+}
+
+function handleBarChartQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  var options = {'title':'occupations with the highest decline percentage of employment between 2010-20',
+                           'width':800,
+                           'height':600,
+                 
+                 'legend':{position:'none'}};
+  var data = response.getDataTable();
+  
+  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+  chart.draw(data,options);
+}
+
+
+
+
+function fun1() { 
+
+var selectedIndex = document.f1.s1.selectedIndex;
+var optionValue = document.f1.s1.options[selectedIndex].value;
+
+fun(optionValue );
+
+}
+
+function fun(optionValue ) {
+if(optionValue =="A")
+drawPieChart();
+
+else if(optionValue =="B")
+drawChart();
+else if(optionValue =="C")
+drawBarChart();
+else if(optionValue =="D")
+drawColumnChart2();
+else if(optionValue =="E")
+drawColumnChart();
+else if(optionValue=="Def")
+location.reload(true);
+}
+   
+</SCRIPT>  
+</HEAD>  
+<BODY>  
+<FORM name="f1">  
+<SELECT name="s1" onchange="fun1()"> 
+<OPTION value = "Def" selected>Select a Employment projection to display</OPTION> 
+<OPTION value="A">Employment By Occupation Group</OPTION>  
+<OPTION value="B">Fastest Growing Occupation</OPTION>
+<OPTION value="C">Fastest Declining Occupation</OPTION>  
+<OPTION value ="D">Occupations with the largest Job Growth</OPTION>
+<OPTION value ="E">Occupations with the largest Job Decline</OPTION>
+
+</SELECT>  
+</FORM> 
+<div id="chart_div" style="width:400; height:300"></div> 
+
+</BODY> 
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script> 
+</HTML>  
