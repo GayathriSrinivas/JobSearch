@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <br>
+  <div class="container">
+    <table class="table table-hover" border="1">
+    <tr> 
+      <td> Company Link </td>
+      <td> <a href="{{info.website}}">{{info.company_name}}</a></td>
+    </tr>
+    <tr>
+      <td>Company Type </td>
+      <td> {{info.type}} </td>
+    </tr>
+    <tr>
+      <td>CEO </td>
+      <td> <img src="{{info.ceo_picture}}"width="70px" height="70px" ></img> {{info.ceo}}</td>
+    </tr>
+    <tr>
+      <td>Revenue </td>
+      <td>{{info.revenue}}</td>
+    </tr>
+      <td>Industry </td>
+      <td>{{info.industry}}</td>
+    </tr>
+    <tr>
+      <td>Competiors</td>
+      <td>
+        <ul>
+    {% for company in info.competitors %}
+       <li>{{company}}</li>
+    {% endfor %}
+        </ul>
+      </td>
+    </table>
+  </div>
+</body>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</html>
+

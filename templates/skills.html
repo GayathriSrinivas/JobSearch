@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Job Search</title>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
+        <style>
+          .ui-autocomplete-loading {
+            background: white url('/static/ui-anim_basic_16x16.gif') right center no-repeat;
+          }
+        </style>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script>
+        $(function() {
+            $( "#skill" ).autocomplete({
+              source: "/skill_autocomplete",
+              minLength: 3,
+              select: function( event, ui ) {
+                $('#skill').val(ui.item.value);
+              }
+            });
+          });
+        </script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script>
+            google.load('visualization', '1.0', {'packages':['corechart']});
+        </script>
+        <script type="text/javascript">
+          
+          function drawChart(chartData) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Company');
+            data.addColumn('number', 'People');
+            data.addRows(chartData);
+            var options = {'title':'People with skill',
+                           'width':600,
+                           'height':300,
+                           'pieHole': 0.4,};
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+
+          function getSkillCompanies() {
+            $.get('/skill_companies?skill=' + encodeURI($('#skill').val()), function(data) {
+                var chartData = JSON.parse(data);
+                drawChart(chartData);
+            });
+          }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+          <label for="skill">Enter a skill: </label>
+          <input id="skill">
+          <button type="button" class="btn btn-primary" onclick="getSkillCompanies();">
+            Get Chart </button>
+        </div>
+        <br/>
+        Chart:
+        <br/>
+        <div id="chart_div"></div>
+    </body>
+    
+</html>

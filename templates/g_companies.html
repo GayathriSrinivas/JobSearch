@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Job Search</title>
+          <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
+        <style>
+          .ui-autocomplete-loading {
+            background: white url('/static/ui-anim_basic_16x16.gif') right center no-repeat;
+          }
+        </style>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script>
+        $(function() {
+            $( "#company" ).autocomplete({
+              source: "/g_companies_autocomplete",
+              minLength: 3,
+              select: function( event, ui ) {
+                $('#company').val(ui.item.value);
+              }
+            });
+          });
+        </script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script>
+            google.load('visualization', '1.0', {'packages':['corechart']});
+        </script>
+        <script type="text/javascript">
+          
+          function drawChart(chartData) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Role');
+            data.addColumn('number', 'Lowest Salary');
+            data.addColumn('number', 'Mean Salary');
+            data.addColumn('number', 'Highest Salary');
+            data.addRows(chartData);
+            var options = {'title':'Salary Details',
+                           hAxis: {title: 'Position', titleTextStyle: {color: 'red'}},
+                           'width':400,
+                           'height':300};
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+
+          function getCompanySalary() {
+            $.get('/company_salary?company=' + encodeURI($('#company').val()), function(data) {
+                var companyData = JSON.parse(data);
+                drawChart(companyData.salary);
+                $('#company_info').html(companyData.company_info);
+            });
+          }
+        </script>
+    </head>
+    <body>
+    <div class="jumbotron">  
+      <div>
+        <div style="position:relative; left: 40px;"class="col-lg-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Company Name" style="width:300px;" id="company">
+              <button class="btn btn-primary" type="button" onclick="getCompanySalary();">Get Chart!</button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
+
+      <br/>
+      <div style="position:relative; left: 50px;" id="chart_div"></div>
+      <div id="company_info"></div>
+      <br/>
+    </div> <!-- /jumbotron -->
+    </body>
+     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</html>
