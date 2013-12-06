@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      var data1= {{list|safe}}
+      
+      alert(data2);
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable(data1);
+   /**     
+        [
+         ['Year', 'No of Employees'],["2013", 135688], ["2012", 133522], ["2011", 131284],["2010", 130224],["2009", 131050],
+         ["2008", 137491], ["2007", 137654], ["2006", 135928],["2005", 133407], ["2004", 131441],["2003", 129946]
+        ]
+**/
+        
+
+        var options = {
+          title: 'No of Employees'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+
+
+      var data={{data|safe}}
+      var value={{value|safe}}
+      function loadList() {
+              var x=document.getElementById("sectorList");
+              for(i=0;i<data.length;i++)
+              {for(i=0;i<2;i++)
+              {
+                var option=document.createElement("option");
+                  option.name= data[0];
+                  option.value=data[0];
+                  option.text=data[1];
+                   x.add(option);
+            }
+          }
+      }
+
+    </script>
+  </head>
+  <body>
+    <form method="post" enctype="multipart/form-data"  action="/result" id='SelectionForm'>
+      <p> Select Sector</p>
+      <p> Excel Data {{data}}  {{value}}</p>
+      <select name="sectorList" form='SelectionForm'>
+      <option value="01">Manufacturing</option>
+    </select>
+     <button type="submit" id="btn">Select Sector</button>
+    </form>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
